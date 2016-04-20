@@ -19,7 +19,6 @@ $major_id	= null; // กำหนดค่าเริ่มต้นของ $
 ################### การเพิ่มข้อมูล ###############
 if(isset($_POST['u']['action']) && $_POST['u']['action']=='insert'){//หากมีการกำหนด u['action'] และ u['action']=='insert' ให้เพิ่มข้อมูล
     $u = $_POST['u'];
-    print_r($u);
     if($u['major_id']==0){
       $_SESSION['flash']['type']='danger';
       $_SESSION['flash']['msg']='กรุณาระบุสาขา';
@@ -228,7 +227,6 @@ $result->execute();//ประมวลผล
                         <?php
                         $major=$con->prepare("SELECT * FROM major");
                         $major->execute();
-                        //print_r($major);
                         while($ma = $major->fetch()){?>
                             <option value="<?php echo $ma['id'];?>" <?php echo ($ma['id']==$major_id)?"selected":""; ?>><?php echo $ma[1];?></option>
                         <?php }?>

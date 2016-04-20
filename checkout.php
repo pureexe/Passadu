@@ -66,7 +66,7 @@ unset($_SESSION['flash']);
   <table width="343" border="1">
     <tr>
       <td width="95">ชื่อรายการ :</td>
-      <td width="277"><input type="text" name="txtOrderName"></td>
+      <td width="277"><input type="text" name="txtOrderName" value="<?php echo $_SESSION["user"]["firstname"]." ".$_SESSION["user"]["lastname"]; ?>"></td>
     </tr>
     <tr>
       <td>สาขา :</td>
