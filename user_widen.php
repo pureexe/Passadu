@@ -22,8 +22,9 @@ date_default_timezone_set('Asia/Bangkok');
 <?php
 mysql_connect("localhost","pure_passadu","12345678");
 mysql_select_db("pure_passadu");
+mysql_set_charset('utf8');
 
-$strSQL = "SELECT * FROM item";
+$strSQL = "SELECT * FROM item WHERE major_id=".$_SESSION["user"]["major_id"];
 $objQuery = mysql_query($strSQL)  or die(mysql_error());
 ?>
 <table width="483"  border="1">

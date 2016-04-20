@@ -15,6 +15,14 @@ include 'html_head.php';
 mysql_connect("localhost","pure_passadu","12345678");
 mysql_select_db("pure_passadu");
 ?>
+<!-- ############### การแจ้งเตือน ############# -->
+<?php if(isset($_SESSION['flash'])){ ?>
+<div class="alert alert-<?php echo $_SESSION['flash']['type'];?>">
+    <?php echo ucfirst($_SESSION['flash']['type']).' '.$_SESSION['flash']['msg'];?>
+</div>
+<?php
+unset($_SESSION['flash']);
+}?>
 <table width="430"  border="1">
   <tr>
     <td width="47" align="center">ลำดับ</td>
@@ -62,11 +70,11 @@ mysql_select_db("pure_passadu");
     </tr>
     <tr>
       <td>สาขา :</td>
-      <td><input type="text" name="txtMajor" id="txtMajor"></td>
+      <td><input type="text" name="txtMajor" id="txtMajor" value="<?php echo $_SESSION["user"]["major"]; ?>"></td>
     </tr>
     <tr>
       <td>เบอร์โทร :</td>
-      <td><input type="text" name="txtTel"></td>
+      <td><input type="text" name="txtTel" value="<?php echo $_SESSION["user"]["tel"]; ?>"></td>
     </tr>
     <tr>
       <td>อีเมล์ :</td>

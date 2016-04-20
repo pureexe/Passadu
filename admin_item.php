@@ -16,13 +16,21 @@ $item_detail	= null; // กำหนดค่าเริ่มต้นขอ�
 $price	= null; // กำหนดค่าเริ่มต้นของ $price
 $all_stock	= null; // กำหนดค่าเริ่มต้นของ $all_stock
 $item_status	= null; // กำหนดค่าเริ่มต้นของ $item_status
-
+$major_id = null;
 
 ################### การเพิ่มข้อมูล ###############
 if(isset($_POST['i']['action']) && $_POST['i']['action']=='insert'){//หากมีการกำหนด i['action'] และ i['action']=='insert' ให้เพิ่มข้อมูล
     $i = $_POST['i'];
+    if($i['major_id']==0){
+      $_SESSION['flash']['type']='danger';
+      $_SESSION['flash']['msg']='กรุณาระบุสาขา';
+    }else if($i['unit_id']==0){
+      $_SESSION['flash']['type']='danger';
+      $_SESSION['flash']['msg']='กรุณาระบุหน่วย';
+    }else{
     $sqli = "INSERT INTO item(
                     name,
+          major_id,
 					unit_id,
 					serial_no,
 					item_code,
@@ -32,6 +40,7 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='insert'){//หาก�
 					item_status
 					) VALUES(
                     :name,
+          :major_id,
 					:unit_id,
 					:serial_no,
 					:item_code,
@@ -43,6 +52,7 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='insert'){//หาก�
     $resulti = $con->prepare($sqli);//เตรียมคำสั่ง SQL
     $resulti->execute(array(
                     'name'=>$i['name'],
+          'major_id'=>$i['major_id'],
 					'unit_id'=>$i['unit_id'],
 					'serial_no'=>$i['serial_no'],
 					'item_code'=>$i['item_code'],
@@ -50,7 +60,7 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='insert'){//หาก�
 					'item_detail'=>$i['item_detail'],
 					'price'=>$i['price'],
 					'item_status'=>$i['item_status']
-					
+
                 )); //ทำการ Bind ค่าลงใน Field ต่างๆ และประมวลผล
     if($resulti!==false){
         $_SESSION['flash']['type']='success';
@@ -59,7 +69,7 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='insert'){//หาก�
         $_SESSION['flash']['type']='danger';
         $_SESSION['flash']['msg']='ไม่สามารถเพิ่มข้อมูลได้';
     }
-
+  }
 }
 
 ################### การแก้ไขข้อมูล #################
@@ -67,11 +77,12 @@ if(isset($_GET['action']) && $_GET['action']=='edit'){ //ถ้ามีกา�
     $iid = $_GET['id'];
 
     $sqle = "SELECT * FROM item WHERE id=:iid"; //เรียกข้อมูลที่ต้องการแก้ไขมา 1 แถว
-    $resulte = $con->prepare($sqle);//เตรียมคำสั่ง SQL 
+    $resulte = $con->prepare($sqle);//เตรียมคำสั่ง SQL
     $resulte->execute(array('iid'=>$iid));//ทำการ Bind ค่าลงใน Field ต่างๆ และประมวลผล
     $rse = $resulte->fetch(); //เก็บไว้ในตัวแปร $rse แบบ array()
 
     $name = $rse['name'];
+    $major_id = $rse['major_id'];
 	$unit_id = $rse['unit_id'];
 	$serial_no = $rse['serial_no'];
 	$item_code = $rse['item_code'];
@@ -85,8 +96,16 @@ if(isset($_GET['action']) && $_GET['action']=='edit'){ //ถ้ามีกา�
 
 if(isset($_POST['i']['action']) && $_POST['i']['action']=='edit'){// ตรวจสอบว่ามีการส่งค่ามาจากการแก้ไขหรือไม่
     $i = $_POST['i'];
+    if($i['major_id']==0){
+      $_SESSION['flash']['type']='danger';
+      $_SESSION['flash']['msg']='กรุณาระบุสาขา';
+    }else if($i['unit_id']==0){
+      $_SESSION['flash']['type']='danger';
+      $_SESSION['flash']['msg']='กรุณาระบุหน่วย';
+    }else{
     $sqlu = "UPDATE item SET
             name=:name,
+            major_id=:major_id,
 			unit_id=:unit_id,
 			serial_no=:serial_no,
 			item_code=:item_code,
@@ -94,12 +113,13 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='edit'){// ตรว�
 			item_detail=:item_detail,
 			price=:price,
 			item_status=:item_status
-			
+
             WHERE id=:id";//คำสั่งในการแก้ไขข้อมูล
     $resultu = $con->prepare($sqlu);//เตรียมคำสั่ง SQL
     $resultu->execute(array(
                         'id'=>$i['id'],
                         'name'=>$i['name'],
+                        'major_id'=>$i['major_id'],
 						'unit_id'=>$i['unit_id'],
 						'serial_no'=>$i['serial_no'],
 						'item_code'=>$i['item_code'],
@@ -107,8 +127,8 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='edit'){// ตรว�
 						'item_detail'=>$i['item_detail'],
 						'price'=>$i['price'],
 						'item_status'=>$i['item_status']
-		
-						
+
+
                     )
                 );// ทำการ Bind ค่าลงใน Field ต่างๆ และประมวลผล
     if($resultu!==false){
@@ -118,6 +138,7 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='edit'){// ตรว�
         $_SESSION['flash']['type']='danger';
         $_SESSION['flash']['msg']='ไม่สามารถแก้ไขข้อมูลได้';
     }
+  }
 }
 
 ################### การลบข้อมูล ###############
@@ -135,7 +156,7 @@ if(isset($_GET['action'])&& $_GET['action']=='delete'){//หากมีกา�
 }
 
 ################### เลือกข้อมูลมาแสดงในตาราง ###############
-$sql = "SELECT * FROM item ORDER BY id DESC";//คำสั่งในการเลือกข้อมูล
+$sql = "SELECT item.*,unit.unit,major.major FROM item JOIN unit ON item.unit_id = unit.id JOIN major ON item.major_id = major.id ORDER BY id DESC";//คำสั่งในการเลือกข้อมูล
 $result = $con->prepare($sql);//เตรียมคำสั่ง SQL
 $result->execute();//ประมวลผล
 ?>
@@ -145,7 +166,9 @@ $result->execute();//ประมวลผล
 <div class="alert alert-<?php echo $_SESSION['flash']['type'];?>">
     <?php echo ucfirst($_SESSION['flash']['type']).' '.$_SESSION['flash']['msg'];?>
 </div>
-<?php }?>
+<?php
+unset($_SESSION['flash']);
+}?>
 <!--################ แบบฟอร์มกรอกข้อมูล ############## -->
 <div class="row">
 <div class="col-md-12">
@@ -157,7 +180,7 @@ $result->execute();//ประมวลผล
 <?php }else{?>
     <input type="hidden" name="i[action]" value="insert">
 <?php }?>
-    
+
     <div class="form-group">
         <label class="control-label col-md-2" for="i-name">ชื่อ</label>
         <div class="col-md-10">
@@ -168,15 +191,15 @@ $result->execute();//ประมวลผล
         <label class="control-label col-md-2" for="i-unit_id">หน่วย</label>
         <div class="col-md-10">
           <select name="i[unit_id]" class="form-control" id="i-unit_id">
-            <option selected="selected">เลือกหน่วย</option>
+            <option value="0">เลือกหน่วย</option>
             <?php
-			
+
                         $unit=$con->prepare("SELECT * FROM unit");
                         $unit->execute();
                         //print_r($unit);
                         while($un = $unit->fetch()){?>
-            <option value="<?php echo $un['id'];?>"><?php echo $un[1];?></option>
-            
+            <option <?php echo ($unit_id==$un['id'])?"selected":""; ?> value="<?php echo $un['id'];?>"><?php echo $un[1];?></option>
+
             <?php }?>
           </select>
         </div>
@@ -211,22 +234,21 @@ $result->execute();//ประมวลผล
             <input id="i-price" class="form-control" type="text" name="i[price]" value="<?php echo $price;?>" >
         </div>
     </div>
-    
-    
-    
-    
+
     <div class="form-group">
-      <div class="col-md-10"></div>
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    <div class="form-group">
-      <div class="col-md-10"></div>
+       <label class="control-label col-md-2" for="u-major_id">สาขา</label>
+       <div class="col-md-10">
+           <select name="i[major_id]" class="form-control" id="u-major_id">
+                       <option <?php echo ($major_id)?"selected":""; ?> value="0">เลือกสาขา</option>
+                       <?php
+                       $major=$con->prepare("SELECT * FROM major");
+                       $major->execute();
+                       while($ma = $major->fetch()){?>
+                           <option value="<?php echo $ma['id'];?>" <?php echo ($ma['id']==$major_id)?"selected":""; ?>><?php echo $ma[1];?></option>
+                       <?php }?>
+                   </select>
+
+       </div>
     </div>
     <div class="form-group">
         <label class="control-label col-md-2" for="i-item_status">สถานะ</label>
@@ -254,15 +276,6 @@ $result->execute();//ประมวลผล
 
 
 
-
-      <?php
-        $sql = "SELECT * FROM item i
-                    LEFT JOIN unit u ON u.id = i.unit_id
-                    WHERE i.item_status=:item_status";
-					
-        $result = $con->prepare($sql);
-        $result->execute(array('item_status'=>'ใช้ได้'));
-      ?>
 <div class="col-md-12">
 <!-- ############### รายการข้อมูล ############# -->
 <h3>รายการพัสดุ/วัสดุ</h3>
@@ -271,6 +284,7 @@ $result->execute();//ประมวลผล
     <thead>
         <tr>
     		<th>ชื่อ</th>
+      <th>สาขา</th>
 			<th>หน่วย</th>
 			<th>หมายเลข Serial</th>
 			<th>รหัสพัสดุ</th>
@@ -278,15 +292,16 @@ $result->execute();//ประมวลผล
 			<th>รายละเอียด</th>
 			<th>ราคา</th>
 			<th>สถานะ</th>
-	
+
             <th></th>
         </tr>
     </thead>
     <tbody>
-     
+
     <?php while($rs = $result->fetch()){?>
         <tr>
     		<td><?php echo $rs['name'];?></td>
+        <td><?php echo $rs['major'];?></td>
 			<td><?php echo $rs['unit'];?></td>
             <td><?php echo $rs['serial_no'];?></td>
 			<td><?php echo $rs['item_code'];?></td>
@@ -294,7 +309,7 @@ $result->execute();//ประมวลผล
 			<td><?php echo $rs['item_detail'];?></td>
 			<td><?php echo $rs['price'];?></td>
 			<td><?php echo $rs['item_status'];?></td>
-	
+
             <td>
                 <a href="<?php echo $_SERVER['PHP_SELF'];?>?action=edit&id=<?php echo $rs['id'];?>" class="btn btn-xs btn-warning">แก้ไข</a>
                 <a href="<?php echo $_SERVER['PHP_SELF'];?>?action=delete&id=<?php echo $rs['id'];?>" class="btn btn-xs btn-danger" onclick="return confirm('แน่ใจนะว่าต้องการลบ?');">ลบ</a>
@@ -306,4 +321,3 @@ $result->execute();//ประมวลผล
 </div>
 </div>
 </div><!--row-->
-

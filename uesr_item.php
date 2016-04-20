@@ -39,7 +39,7 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='insert'){//หาก�
 					:item_detail,
 					:price,
 					:item_status
-					
+
                 )";//คำสั่งในการเพิ่มข้อมูลลงในตาราง item
     $resulti = $con->prepare($sqli);//เตรียมคำสั่ง SQL
     $resulti->execute(array(
@@ -51,7 +51,7 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='insert'){//หาก�
 					'item_detail'=>$i['item_detail'],
 					'price'=>$i['price'],
 					'item_status'=>$i['item_status']
-					
+
                 )); //ทำการ Bind ค่าลงใน Field ต่างๆ และประมวลผล
     if($resulti!==false){
         $_SESSION['flash']['type']='success';
@@ -68,7 +68,7 @@ if(isset($_GET['action']) && $_GET['action']=='edit'){ //ถ้ามีกา�
     $iid = $_GET['id'];
 
     $sqle = "SELECT * FROM item WHERE id=:iid"; //เรียกข้อมูลที่ต้องการแก้ไขมา 1 แถว
-    $resulte = $con->prepare($sqle);//เตรียมคำสั่ง SQL 
+    $resulte = $con->prepare($sqle);//เตรียมคำสั่ง SQL
     $resulte->execute(array('iid'=>$iid));//ทำการ Bind ค่าลงใน Field ต่างๆ และประมวลผล
     $rse = $resulte->fetch(); //เก็บไว้ในตัวแปร $rse แบบ array()
 
@@ -94,7 +94,7 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='edit'){// ตรว�
 			item_detail=:item_detail,
 			price=:price,
 			item_status=:item_status
-			
+
             WHERE id=:id";//คำสั่งในการแก้ไขข้อมูล
     $resultu = $con->prepare($sqlu);//เตรียมคำสั่ง SQL
     $resultu->execute(array(
@@ -107,7 +107,7 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='edit'){// ตรว�
 						'item_detail'=>$i['item_detail'],
 						'price'=>$i['price'],
 						'item_status'=>$i['item_status']
-						
+
                     )
                 );// ทำการ Bind ค่าลงใน Field ต่างๆ และประมวลผล
     if($resultu!==false){
@@ -134,7 +134,7 @@ if(isset($_GET['action'])&& $_GET['action']=='delete'){//หากมีกา�
 }
 
 ################### เลือกข้อมูลมาแสดงในตาราง ###############
-$sql = "SELECT * FROM item ORDER BY id DESC";//คำสั่งในการเลือกข้อมูล
+$sql = "SELECT * FROM item WHERE major_id='".$_SESSION['user']['major_id']."'ORDER BY id DESC";//คำสั่งในการเลือกข้อมูล
 $result = $con->prepare($sql);//เตรียมคำสั่ง SQL
 $result->execute();//ประมวลผล
 ?>
@@ -146,12 +146,13 @@ $result->execute();//ประมวลผล
 </div>
 <?php }?>
 <!--################ แบบฟอร์มกรอกข้อมูล ############## -->
-<div class="row">
+<!-- <div class="row">
 <div class="col-md-12">
 <h3>&nbsp;</h3>
 </div>
 
 <hr />
+-->
 <div class="col-md-12">
 <!-- ############### รายการข้อมูล ############# -->
 <h3>รายการวัสดุ</h3>
@@ -167,7 +168,7 @@ $result->execute();//ประมวลผล
 			<th width="45"><center>ราคา</center></th>
 			<th width="63"><center>สถานะ</center></th>
 
-         
+
         </tr>
     </thead>
     <tbody>
@@ -180,8 +181,8 @@ $result->execute();//ประมวลผล
 			<td align="center"><?php echo $rs['item_detail'];?></td>
 			<td align="center"><?php echo $rs['price'];?></td>
 			<td align="center"><?php echo $rs['item_status'];?></td>
-	
-                    
+
+
         </tr>
     <?php }?>
     </tbody>

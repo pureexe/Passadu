@@ -7,6 +7,28 @@ mysql_connect("localhost","pure_passadu","12345678");
 mysql_select_db("pure_passadu");
 
 
+//Check is not minus
+for($i=0;$i<=(int)$_SESSION["intLine"];$i++){
+  if($_SESSION["strID"][$i] != ""){
+    $strSQL = "SELECT name,in_stock FROM item WHERE ID='".$_SESSION["strID"][$i]."'";
+    $result = mysql_query($strSQL) or die(mysql_error());
+    $row = mysql_fetch_assoc($result);
+    if($row["in_stock"]<$_SESSION["strQty"][$i]){
+      header("location:checkout.php");
+      $_SESSION['flash']['type']='danger';
+      $_SESSION['flash']['msg']=$row['name']." ที่มีอยู่ในคลังมีน้อยกว่าที่ต้องการเบิก";
+      exit();
+    }
+  }
+}
+// Decrease in_stock
+for($i=0;$i<=(int)$_SESSION["intLine"];$i++){
+  if($_SESSION["strID"][$i] != ""){
+    $strSQL = "UPDATE item SET `in_stock`=(`in_stock`-".$_SESSION["strQty"][$i].") WHERE `id` = '".$_SESSION["strID"][$i]."'";
+    mysql_query($strSQL) or die(mysql_error());
+  }
+}
+
   $Total = 0;
   $SumTotal = 0;
 

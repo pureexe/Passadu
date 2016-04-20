@@ -19,48 +19,51 @@ $major_id	= null; // กำหนดค่าเริ่มต้นของ $
 ################### การเพิ่มข้อมูล ###############
 if(isset($_POST['u']['action']) && $_POST['u']['action']=='insert'){//หากมีการกำหนด u['action'] และ u['action']=='insert' ให้เพิ่มข้อมูล
     $u = $_POST['u'];
-    $sqli = "INSERT INTO user (
-                    firstname,
-					lastname,
-					username,
-					password,
-					major_id,
-					address,
-					tel,
-					user_type
-					) VALUES(
-                    :firstname,
-					:lastname,
-					:username,
-					:password,
-					:major_id,
-					:address,
-					:tel,
-					:user_type
-
-					
-                )";//คำสั่งในการเพิ่มข้อมูลลงในตาราง user
-    $resulti = $con->prepare($sqli);//เตรียมคำสั่ง SQL
-    $resulti->execute(array(
-                    'firstname'=>$u['firstname'],
-					'lastname'=>$u['lastname'],
-					'username'=>$u['username'],
-					'password'=>$u['password'],
-					'major_id'=>$u['major_id'],
-					'address'=>$u['address'],
-					'tel'=>$u['tel'],
-					'user_type'=>$u['user_type']
-
-					
-                )); //ทำการ Bind ค่าลงใน Field ต่างๆ และประมวลผล
-    if($resulti!==false){
-        $_SESSION['flash']['type']='success';
-        $_SESSION['flash']['msg']='เพิ่มข้อมูลเรียบร้อย';
+    print_r($u);
+    if($u['major_id']==0){
+      $_SESSION['flash']['type']='danger';
+      $_SESSION['flash']['msg']='กรุณาระบุสาขา';
     }else{
-        $_SESSION['flash']['type']='danger';
-        $_SESSION['flash']['msg']='ไม่สามารถเพิ่มข้อมูลได้';
-    }
+      $sqli = "INSERT INTO user (
+                      firstname,
+  					lastname,
+  					username,
+  					password,
+  					major_id,
+  					address,
+  					tel,
+  					user_type
+  					) VALUES(
+                      :firstname,
+  					:lastname,
+  					:username,
+  					:password,
+  					:major_id,
+  					:address,
+  					:tel,
+  					:user_type
 
+
+                  )";//คำสั่งในการเพิ่มข้อมูลลงในตาราง user
+      $resulti = $con->prepare($sqli);//เตรียมคำสั่ง SQL
+      $resulti->execute(array(
+                      'firstname'=>$u['firstname'],
+  					'lastname'=>$u['lastname'],
+  					'username'=>$u['username'],
+  					'password'=>$u['password'],
+  					'major_id'=>$u['major_id'],
+  					'address'=>$u['address'],
+  					'tel'=>$u['tel'],
+  					'user_type'=>$u['user_type']
+                  )); //ทำการ Bind ค่าลงใน Field ต่างๆ และประมวลผล
+      if($resulti!==false){
+          $_SESSION['flash']['type']='success';
+          $_SESSION['flash']['msg']='เพิ่มข้อมูลเรียบร้อย';
+      }else{
+          $_SESSION['flash']['type']='danger';
+          $_SESSION['flash']['msg']='ไม่สามารถเพิ่มข้อมูลได้';
+      }
+    }
 }
 
 ################### การแก้ไขข้อมูล #################
@@ -68,7 +71,7 @@ if(isset($_GET['action']) && $_GET['action']=='edit'){ //ถ้ามีกา�
     $uid = $_GET['id'];
 
     $sqle = "SELECT * FROM user WHERE id=:uid"; //เรียกข้อมูลที่ต้องการแก้ไขมา 1 แถว
-    $resulte = $con->prepare($sqle);//เตรียมคำสั่ง SQL 
+    $resulte = $con->prepare($sqle);//เตรียมคำสั่ง SQL
     $resulte->execute(array('uid'=>$uid));//ทำการ Bind ค่าลงใน Field ต่างๆ และประมวลผล
     $rse = $resulte->fetch(); //เก็บไว้ในตัวแปร $rse แบบ array()
 
@@ -86,6 +89,10 @@ if(isset($_GET['action']) && $_GET['action']=='edit'){ //ถ้ามีกา�
 
 if(isset($_POST['u']['action']) && $_POST['u']['action']=='edit'){// ตรวจสอบว่ามีการส่งค่ามาจากการแก้ไขหรือไม่
     $u = $_POST['u'];
+    if($u['major_id']==0){
+      $_SESSION['flash']['type']='danger';
+      $_SESSION['flash']['msg']='กรุณาระบุสาขา';
+    }else{
     $sqlu = "UPDATE user SET
             firstname=:firstname,
 			lastname=:lastname,
@@ -95,7 +102,7 @@ if(isset($_POST['u']['action']) && $_POST['u']['action']=='edit'){// ตรว�
 			tel=:tel,
 			user_type=:user_type,
 		    major_id=:major_id
-			
+
             WHERE id=:id";//คำสั่งในการแก้ไขข้อมูล
     $resultu = $con->prepare($sqlu);//เตรียมคำสั่ง SQL
     $resultu->execute(array(
@@ -108,7 +115,7 @@ if(isset($_POST['u']['action']) && $_POST['u']['action']=='edit'){// ตรว�
 						'tel'=>$u['tel'],
 						'user_type'=>$u['user_type'],
 						'major_id'=>$u['major_id']
-						
+
                     )
                 );// ทำการ Bind ค่าลงใน Field ต่างๆ และประมวลผล
     if($resultu!==false){
@@ -118,6 +125,7 @@ if(isset($_POST['u']['action']) && $_POST['u']['action']=='edit'){// ตรว�
         $_SESSION['flash']['type']='danger';
         $_SESSION['flash']['msg']='ไม่สามารถแก้ไขข้อมูลได้';
     }
+  }
 }
 
 ################### การลบข้อมูล ###############
@@ -135,7 +143,7 @@ if(isset($_GET['action'])&& $_GET['action']=='delete'){//หากมีกา�
 }
 
 ################### เลือกข้อมูลมาแสดงในตาราง ###############
-$sql = "SELECT * FROM user ORDER BY id DESC";//คำสั่งในการเลือกข้อมูล
+$sql = "SELECT user.*,major.major FROM user JOIN major ON user.major_id = major.id ORDER BY id DESC";//คำสั่งในการเลือกข้อมูล
 $result = $con->prepare($sql);//เตรียมคำสั่ง SQL
 $result->execute();//ประมวลผล
 ?>
@@ -145,7 +153,10 @@ $result->execute();//ประมวลผล
 <div class="alert alert-<?php echo $_SESSION['flash']['type'];?>">
     <?php echo ucfirst($_SESSION['flash']['type']).' '.$_SESSION['flash']['msg'];?>
 </div>
-<?php }?>
+<?php
+  unset($_SESSION['flash']);
+}
+?>
 <!--################ แบบฟอร์มกรอกข้อมูล ############## -->
 <div class="row">
 <div class="col-md-12">
@@ -161,7 +172,7 @@ $result->execute();//ประมวลผล
 <?php }else{?>
     <input type="hidden" name="u[action]" value="insert">
 <?php }?>
-    
+
     <div class="form-group">
         <label class="control-label col-md-2" for="u-firstname">ชื่อ</label>
         <div class="col-md-10">
@@ -186,7 +197,7 @@ $result->execute();//ประมวลผล
             <input id="u-password" class="form-control" type="text" name="u[password]" value="<?php echo $password;?>" required="required">
         </div>
     </div>
-    
+
     <div class="form-group">
         <label class="control-label col-md-2" for="u-address">ที่อยู่</label>
         <div class="col-md-10">
@@ -207,19 +218,19 @@ $result->execute();//ประมวลผล
 				<option value="user" <?php if($user_type=='user'){?> selected="selected"<?php }?>>user</option>
 			</select>
              </div>
-             
+
     </div>
      <div class="form-group">
         <label class="control-label col-md-2" for="u-major_id">สาขา</label>
-        <div class="col-md-10">            
+        <div class="col-md-10">
             <select name="u[major_id]" class="form-control" id="u-major_id">
-                        <option selected="selected">เลือกสาขา</option>
+                        <option <?php echo ($major_id)?"selected":""; ?> value="0">เลือกสาขา</option>
                         <?php
                         $major=$con->prepare("SELECT * FROM major");
                         $major->execute();
                         //print_r($major);
                         while($ma = $major->fetch()){?>
-                            <option value="<?php echo $ma['id'];?>"><?php echo $ma[1];?></option>
+                            <option value="<?php echo $ma['id'];?>" <?php echo ($ma['id']==$major_id)?"selected":""; ?>><?php echo $ma[1];?></option>
                         <?php }?>
                     </select>
 
@@ -239,13 +250,15 @@ $result->execute();//ประมวลผล
 
 
       <?php
+      /*
         $sql = "SELECT * FROM user i
                     LEFT JOIN major u ON u.id = i.major_id
                     WHERE i.user_type=:user_type";
         $result = $con->prepare($sql);
         $result->execute(array('user_type'=>'user'));
+        */
       ?>
-      
+
 <h3>ข้อมูลผู้ใช้งาน</h3>
 <div class="table-responsive">
 <table class="table table-bordered table-hover table-striped">
@@ -259,7 +272,7 @@ $result->execute();//ประมวลผล
             <th>สาขา</th>
 			<th>เบอร์โทร</th>
             <th>กลุ่มผู้ใช้งาน</th>
-	
+
             <th></th>
         </tr>
     </thead>
@@ -274,10 +287,10 @@ $result->execute();//ประมวลผล
             <td><?php echo $rs_item['major'];?></td>
 			<td><?php echo $rs_item['tel'];?></td>
 			<td><?php echo $rs_item['user_type'];?></td>
-	
+
             <td>
-                <a href="<?php echo $_SERVER['PHP_SELF'];?>?action=edit&id=<?php echo $rs['id'];?>" class="btn btn-xs btn-warning">แก้ไข</a>
-                <a href="<?php echo $_SERVER['PHP_SELF'];?>?action=delete&id=<?php echo $rs['id'];?>" class="btn btn-xs btn-danger" onclick="return confirm('แน่ใจนะว่าต้องการลบ?');">ลบ</a>
+                <a href="<?php echo $_SERVER['PHP_SELF'];?>?action=edit&id=<?php echo $rs_item['id'];?>" class="btn btn-xs btn-warning">แก้ไข</a>
+                <a href="<?php echo $_SERVER['PHP_SELF'];?>?action=delete&id=<?php echo $rs_item['id'];?>" class="btn btn-xs btn-danger" onclick="return confirm('แน่ใจนะว่าต้องการลบ?');">ลบ</a>
             </td>
         </tr>
     <?php }?>
@@ -286,4 +299,3 @@ $result->execute();//ประมวลผล
 </div>
 </div>
 </div><!--row-->
-

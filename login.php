@@ -7,7 +7,7 @@ include 'dbcon.php';
 include 'bguse.php';
 if(isset($_POST['l'])){
 	$l = $_POST['l'];
-	$sql = "SELECT * FROM user WHERE username=:user AND password=:pass";
+	$sql = "SELECT user.*,major.major FROM user JOIN major ON user.major_id=major.id WHERE username=:user AND password=:pass";
 	$result = $con->prepare($sql);
 	$result->execute(array('user'=>$l['username'],'pass'=>$l['password']));
 	$rs = $result->fetch();
@@ -48,8 +48,6 @@ include 'html_head.php';
 			<input id="l-password" type="password" class="form-control" name="l[password]"  required="required" />
 		</div>
 	</div>
-    
+
 	<input type="submit" value="เข้าสู่ระบบ" class="btn btn-success">
 </form>
-
-
