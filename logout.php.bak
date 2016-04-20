@@ -5,4 +5,4 @@ if(!isset($_SESSION)){
 include 'function.php';
 unset($_SESSION['user']);//ยกเลิก Session
 
-redirect('login.php');//เด้งไปหน้า index.php
+redirect('logout.php');//เด้งไปหน้า index.php

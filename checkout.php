@@ -15,24 +15,13 @@ include 'html_head.php';
 mysql_connect("localhost","pure_passadu","12345678");
 mysql_select_db("pure_passadu");
 ?>
-<?php
-  if($_GET["error"]=="minus"){
-    ?>
-    <div class="alert alert-danger" role="alert">
-      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-      <span class="sr-only">ผิดพลาด:</span>
-      จำนวนของที่เบิกมีมากกว่าจำนวนของที่มีอยู่ในคลัง
-    </div>
-    <?php
-  }
-?>
-<table width="400"  border="1">
+<table width="430"  border="1">
   <tr>
-    <td width="101">ID</td>
-    <td width="82">Name</td>
-    <td width="82">Price</td>
-    <td width="79">Qty</td>
-    <td width="79">Total</td>
+    <td width="47" align="center">ลำดับ</td>
+    <td width="152" align="center">ชื่อวัสดุ</td>
+    <td width="57" align="center">ราคา</td>
+    <td width="76" align="center">จำนวน</td>
+    <td width="64" align="center">ราคารวม</td>
   </tr>
   <?php
   $Total = 0;
@@ -42,42 +31,45 @@ mysql_select_db("pure_passadu");
   {
 	  if($_SESSION["strID"][$i] != "")
 	  {
-		$strSQL = "SELECT * FROM item WHERE ID = '".$_SESSION["strID"][$i]."' ";
+		$strSQL = "SELECT * FROM item WHERE id = '".$_SESSION["strID"][$i]."' ";
 		$objQuery = mysql_query($strSQL)  or die(mysql_error());
 		$objResult = mysql_fetch_array($objQuery);
-		$Total = $_SESSION["strQty"][$i] * $objResult["Price"];
+		$Total = $_SESSION["strQty"][$i] * $objResult["price"];
 		$SumTotal = $SumTotal + $Total;
 	  ?>
 	  <tr>
-		<td><?=$_SESSION["strID"][$i];?></td>
-		<td><?=$objResult["Name"];?></td>
-		<td><?=$objResult["Price"];?></td>
-		<td><?=$_SESSION["strQty"][$i];?></td>
-		<td><?=number_format($Total,2);?></td>
+		<td align="center"><?=$_SESSION["strID"][$i];?></td>
+		<td align="center"><?=$objResult["name"];?></td>
+		<td align="center"><?=$objResult["price"];?></td>
+		<td align="center"><?=$_SESSION["strQty"][$i];?></td>
+		<td align="center"><?=number_format($Total,2);?></td>
 	  </tr>
 	  <?php
 	  }
   }
   ?>
 </table>
-Sum Total <?=number_format($SumTotal,2);?>
-<br><br>
+<p>&nbsp;</p>
+<p>ราคารวมทั้งหมด :
+  <?=number_format($SumTotal,2);?>
+  <br>
+</p>
 <form name="form1" method="post" action="save_checkout.php">
-  <table width="304" border="1">
+  <table width="343" border="1">
     <tr>
-      <td width="71">OrderName</td>
-      <td width="217"><input type="text" name="txtOrderName"></td>
+      <td width="95">ชื่อรายการ :</td>
+      <td width="277"><input type="text" name="txtOrderName"></td>
     </tr>
     <tr>
-      <td>Address</td>
-      <td><textarea name="txtAddress"></textarea></td>
+      <td>สาขา :</td>
+      <td><input type="text" name="txtMajor" id="txtMajor"></td>
     </tr>
     <tr>
-      <td>Tel</td>
+      <td>เบอร์โทร :</td>
       <td><input type="text" name="txtTel"></td>
     </tr>
     <tr>
-      <td>Email</td>
+      <td>อีเมล์ :</td>
       <td><input type="text" name="txtEmail"></td>
     </tr>
   </table>

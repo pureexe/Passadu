@@ -13,7 +13,7 @@ date_default_timezone_set('Asia/Bangkok');
 <?php
 //session_start();
 //session_destroy();
-?> 
+?>
 <html>
 <head>
 <title>ThaiCreate.Com</title>
@@ -22,43 +22,38 @@ date_default_timezone_set('Asia/Bangkok');
 <?php
 mysql_connect("localhost","pure_passadu","12345678");
 mysql_select_db("pure_passadu");
+
 $strSQL = "SELECT * FROM item";
 $objQuery = mysql_query($strSQL)  or die(mysql_error());
 ?>
-<table width="327"  border="1">
+<table width="483"  border="1">
   <tr>
-    <td width="101">Picture</td>
-    <td width="200">ID</td>
-    <td width="200">Name</td>
-    <td width="200">Price</td>
-    <td width="200">Cart</td>
+    <td width="37" align="center">ลำดับ</td>
+    <td width="177" align="center">ชื่อวัสดุ</td>
+    <td width="101" align="center">ราคาวัสดุ</td>
+    <td width="140" align="center">รายการ</td>
   </tr>
   <?php
   while($objResult = mysql_fetch_array($objQuery))
   {
   ?>
   <tr>
-	<td><img src="img/<?=$objResult["Picture"];?>"></td>
-    <td><?=$objResult["ID"];?></td>
-    <td><?=$objResult["Name"];?></td>
-    <td><?=$objResult["Price"];?></td>
-    <td><a href="order.php?ID=<?=$objResult["ID"];?>">Order</a></td>
+	<td align="center"><?=$objResult["id"];?></td>
+    <td align="center"><?=$objResult["name"];?></td>
+    <td align="center"><?=$objResult["price"];?></td>
+    <td align="center"><a href="order.php?ID=<?=$objResult["id"];?>">เลือก</a></td>
   </tr>
   <?php
   }
   ?>
 </table>
-<br><br><a href="show.php">View Cart</a> | <a href="clear.php">Clear Cart</a>
-<?php
+<p><br>
+  <br>
+  <a href="show.php">ดูรายการวัสดุที่เลือก</a> | <a href="clear.php">ออกจากระบบ</a>
+  <?php
 mysql_close();
 ?>
+</p>
+<p>&nbsp;</p>
 </body>
 </html>
-
-
-
-
-
-<?php
-include 'html_foot.php';
-?>

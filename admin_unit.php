@@ -108,7 +108,7 @@ $result->execute();//ประมวลผล
     
     <div class="form-group">
         <label class="control-label col-md-2" for="u-unit">หน่วย</label>
-        <div class="col-md-10">
+        <div class="col-md-4">
             <input id="u-unit" class="form-control" type="text" name="u[unit]" value="<?php echo $unit;?>" required="required">
         </div>
     </div>
@@ -149,6 +149,4 @@ $result->execute();//ประมวลผล
 </div>
 </div>
 </div><!--row-->
-<?php
-include 'html_foot.php';
-?>
+

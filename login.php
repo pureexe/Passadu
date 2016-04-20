@@ -4,6 +4,7 @@ if(!isset($_SESSION)){
 }
 include 'function.php';
 include 'dbcon.php';
+include 'bguse.php';
 if(isset($_POST['l'])){
 	$l = $_POST['l'];
 	$sql = "SELECT * FROM user WHERE username=:user AND password=:pass";
@@ -37,17 +38,18 @@ include 'html_head.php';
 <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>" class="form-horizontal">
 	<div class="form-group">
 		<label for="l-username" class="control-label col-md-2">Username</label>
-		<div class="col-md-10">
+		<div class="col-md-5">
 			<input id="l-username" type="text" class="form-control" name="l[username]" required="required" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="l-password" class="control-label col-md-2">Password</label>
-		<div class="col-md-10">
+		<div class="col-md-5">
 			<input id="l-password" type="password" class="form-control" name="l[password]"  required="required" />
 		</div>
 	</div>
+    
 	<input type="submit" value="เข้าสู่ระบบ" class="btn btn-success">
 </form>
-<?php
-include 'html_foot.php';
+
+

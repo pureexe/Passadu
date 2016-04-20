@@ -5,11 +5,14 @@ if(!isset($_SESSION)){
 include 'function.php';
 is_login();
 include 'html_head.php';
-
+include 'bgadmin.php';
 //print_r($_SESSION['user']);
 ?>
-<h2>สวัสดี <?php echo $_SESSION['user']['firstname'].' '.$_SESSION['user']['lastname'];?></h2>
 
 <?php
-include 'html_foot.php';
 ?>
+<h3>ชื่อผู้ใช้ : <?php echo $_SESSION['user']['firstname'] .' '.$_SESSION['user']['lastname'];?></h3>
+<?php
+
+?>
+<h3>ระดับผู้ใช้ : <?php echo $_SESSION['user']['user_type'];?></h3>

@@ -15,9 +15,9 @@ $in_stock	= null; // กำหนดค่าเริ่มต้นของ $
 $item_detail	= null; // กำหนดค่าเริ่มต้นของ $item_detail
 $price	= null; // กำหนดค่าเริ่มต้นของ $price
 $all_stock	= null; // กำหนดค่าเริ่มต้นของ $all_stock
-$item_type	= null; // กำหนดค่าเริ่มต้นของ $item_type
 $item_status	= null; // กำหนดค่าเริ่มต้นของ $item_status
-$Picture	= null;  //กำหนดค่าเริ่มต้นของ $Picture
+
+
 ################### การเพิ่มข้อมูล ###############
 if(isset($_POST['i']['action']) && $_POST['i']['action']=='insert'){//หากมีการกำหนด i['action'] และ i['action']=='insert' ให้เพิ่มข้อมูล
     $i = $_POST['i'];
@@ -29,9 +29,7 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='insert'){//หาก�
 					in_stock,
 					item_detail,
 					price,
-					item_type,
-					item_status,
-					Picture
+					item_status
 					) VALUES(
                     :name,
 					:unit_id,
@@ -40,10 +38,7 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='insert'){//หาก�
 					:in_stock,
 					:item_detail,
 					:price,
-					:item_type,
-					:item_status,
-					:Picture
-					
+					:item_status
                 )";//คำสั่งในการเพิ่มข้อมูลลงในตาราง item
     $resulti = $con->prepare($sqli);//เตรียมคำสั่ง SQL
     $resulti->execute(array(
@@ -54,9 +49,7 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='insert'){//หาก�
 					'in_stock'=>$i['in_stock'],
 					'item_detail'=>$i['item_detail'],
 					'price'=>$i['price'],
-					'item_type'=>$i['item_type'],
-					'item_status'=>$i['item_status'],
-					'Picture'=>$i['Picture']
+					'item_status'=>$i['item_status']
 					
                 )); //ทำการ Bind ค่าลงใน Field ต่างๆ และประมวลผล
     if($resulti!==false){
@@ -85,9 +78,8 @@ if(isset($_GET['action']) && $_GET['action']=='edit'){ //ถ้ามีกา�
 	$in_stock = $rse['in_stock'];
 	$item_detail = $rse['item_detail'];
 	$price = $rse['price'];
-	$item_type = $rse['item_type'];
 	$item_status = $rse['item_status'];
-	$Picture = $rse['Picture'];
+
 	 // กำหนดค่าให้กับตัวแปรเพื่อส่งให้ฟอร์ม
 }
 
@@ -101,9 +93,7 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='edit'){// ตรว�
 			in_stock=:in_stock,
 			item_detail=:item_detail,
 			price=:price,
-			item_type=:item_type,
-			item_status=:item_status,
-			Picture=:Picture
+			item_status=:item_status
 			
             WHERE id=:id";//คำสั่งในการแก้ไขข้อมูล
     $resultu = $con->prepare($sqlu);//เตรียมคำสั่ง SQL
@@ -116,9 +106,8 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='edit'){// ตรว�
 						'in_stock'=>$i['in_stock'],
 						'item_detail'=>$i['item_detail'],
 						'price'=>$i['price'],
-						'item_type'=>$i['item_type'],
-						'item_status'=>$i['item_status'],
-						'Picture'=>$i['Picture']
+						'item_status'=>$i['item_status']
+		
 						
                     )
                 );// ทำการ Bind ค่าลงใน Field ต่างๆ และประมวลผล
@@ -178,15 +167,17 @@ $result->execute();//ประมวลผล
     <div class="form-group">
         <label class="control-label col-md-2" for="i-unit_id">หน่วย</label>
         <div class="col-md-10">
-            <select name="i[unit_id]" class="form-control" id="i-unit_id">
-                        <option>เลือกหน่วย</option>
-                        <?php
+          <select name="i[unit_id]" class="form-control" id="i-unit_id">
+            <option selected="selected">เลือกหน่วย</option>
+            <?php
+			
                         $unit=$con->prepare("SELECT * FROM unit");
                         $unit->execute();
                         //print_r($unit);
                         while($un = $unit->fetch()){?>
-                            <option value="<?php echo $un['id'];?>"><?php echo $un[1];?></option>
-                        <?php }?>
+            <option value="<?php echo $un['id'];?>"><?php echo $un[1];?></option>
+            
+            <?php }?>
           </select>
         </div>
     </div>
@@ -225,10 +216,7 @@ $result->execute();//ประมวลผล
     
     
     <div class="form-group">
-    <label class="control-label col-md-2" for="i-item_type">รูปภาพ</label> 
-    <div class="col-md-10">
-    <input type="file" name="Picture" "<?php echo $Picture;?>">
-    </div>
+      <div class="col-md-10"></div>
     </div>
     
     
@@ -238,14 +226,7 @@ $result->execute();//ประมวลผล
     
     
     <div class="form-group">
-        <label class="control-label col-md-2" for="i-item_type">ประเภท</label>
-        <div class="col-md-10">
-            <select name="i[item_type]" class="form-control" id="i-item_type">
-				<option value="วัสดุ" <?php if($item_type=='วัสดุ'){?> selected="selected"<?php }?>>วัสดุ</option>
-				
-			</select>
-
-        </div>
+      <div class="col-md-10"></div>
     </div>
     <div class="form-group">
         <label class="control-label col-md-2" for="i-item_status">สถานะ</label>
@@ -258,7 +239,7 @@ $result->execute();//ประมวลผล
 
         </div>
     </div>
-        <input type="submit" value="บันทึกข้อมูล พัสดุ/วัสดุ" class="btn btn-primary">
+        <input type="submit" value="บันทึกข้อมูล พัสดุ" class="btn btn-primary">
         <?php if(isset($_GET['action']) && $_GET['action']=='edit'){ //หากมีการแก้ไขให้แสดงปุ่ม ยกเลิก ?>
             <a href="admin_item.php" class="btn btn-warning">ยกเลิก</a>
         <?php }?>
@@ -267,6 +248,21 @@ $result->execute();//ประมวลผล
 </div>
 
 <hr />
+
+
+
+
+
+
+
+      <?php
+        $sql = "SELECT * FROM item i
+                    LEFT JOIN unit u ON u.id = i.unit_id
+                    WHERE i.item_status=:item_status";
+					
+        $result = $con->prepare($sql);
+        $result->execute(array('item_status'=>'ใช้ได้'));
+      ?>
 <div class="col-md-12">
 <!-- ############### รายการข้อมูล ############# -->
 <h3>รายการพัสดุ/วัสดุ</h3>
@@ -281,23 +277,22 @@ $result->execute();//ประมวลผล
 			<th>จำนวนคงเหลือ</th>
 			<th>รายละเอียด</th>
 			<th>ราคา</th>
-			<th>ประเภท</th>
 			<th>สถานะ</th>
 	
             <th></th>
         </tr>
     </thead>
     <tbody>
-    <?php while($rs=$result->fetch()){?>
+     
+    <?php while($rs = $result->fetch()){?>
         <tr>
     		<td><?php echo $rs['name'];?></td>
-			<td><?php echo $rs['unit_id'];?></td>
-			<td><?php echo $rs['serial_no'];?></td>
+			<td><?php echo $rs['unit'];?></td>
+            <td><?php echo $rs['serial_no'];?></td>
 			<td><?php echo $rs['item_code'];?></td>
 			<td><?php echo $rs['in_stock'];?></td>
 			<td><?php echo $rs['item_detail'];?></td>
 			<td><?php echo $rs['price'];?></td>
-			<td><?php echo $rs['item_type'];?></td>
 			<td><?php echo $rs['item_status'];?></td>
 	
             <td>
@@ -311,6 +306,4 @@ $result->execute();//ประมวลผล
 </div>
 </div>
 </div><!--row-->
-<?php
-include 'html_foot.php';
-?>
+

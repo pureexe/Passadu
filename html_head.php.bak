@@ -29,38 +29,25 @@
   </head>
   <body>
       
-      <nav class="navbar navbar-inverse navbar-fixed-top">
+      <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #FF6666">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="index.php">SMS</a>
+      
+      
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="index.php">หน้าหลัก</a></li>
-      </ul>
-
       <ul class="nav navbar-nav navbar-right">
         <?php if(!isset($_SESSION['user'])){?>
         <li><a href="login.php">เข้าสู่ระบบ</a></li>
         <?php }else{?>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?php echo $_SESSION['user']['firstname'].' '.$_SESSION['user']['lastname'];?> <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="user_dashboard.php">หน้าหลัก</a></li>
-            <li><a href="#">เบิกวัสดุ</a></li>
-            <li><a href="#">ยืมพัสดุ</a></li>
-            <li class="divider"></li>
-            <li><a href="logout.php">ออกจากระบบ</a></li>
-          </ul>
+        <li>
+      
+        
+          <a aria-label="Left Align">&nbsp;<?php echo $_SESSION['user']['firstname'].' '.$_SESSION['user']['lastname'];?> </span></a>
+         
         </li>
         <?php }?>
       </ul>
@@ -76,14 +63,14 @@
           <?php if(isset($_SESSION['user']) && $_SESSION['user']['user_type']=='admin'){?>
           <div class="list-group">
               <a href="admin_dashboard.php" class="list-group-item">หน้าหลักผู้ดูแลระบบ</a>
+			  <a href="search.php" class="list-group-item">ค้นหาข้อมูล</a>
               <a href="admin_user.php" class="list-group-item">จัดการข้อมูลผู้ใช้</a>
-              <a href="admin_item.php" class="list-group-item">จัดการข้อมูลวัสดุ-พัสดุ</a>
+              <a href="admin_item.php" class="list-group-item">จัดการข้อมูลวัสดุ</a>
               <a href="admin_unit.php" class="list-group-item">จัดการข้อมูลหน่วย</a>
-              <a href="admin_widen.php" class="list-group-item">จัดการข้อมูลการเบิกวัสดุ-ยิมพัสดุ</a>
-              <a href="admin_item_return.php" class="list-group-item">การคืนพัสดุ</a>
-              <a href="admin_order_item.php" class="list-group-item">จัดการข้อมูลการสั่งซื้อ</a>
-              <a href="admin_fix.php" class="list-group-item">จัดการข้อมูลการแจ้งซ่อม</a>
-              <a href="admin_fix_fixed.php" class="list-group-item">สถานะการซ่อม</a>
+              <a href="admin_widen.php" class="list-group-item">จัดการข้อมูลการเบิกวัสดุ</a>
+              
+                          
+              
           </div>
           <?php }?>
           
@@ -97,11 +84,11 @@
            <?php }?>
           
           <div class="list-group">
-            <a href="index.php" class="list-group-item">หน้าหลัก</a>
+            
            
             <?php if(!isset($_SESSION['user'])){?>
             
-              <a href="login.php" class="list-group-item">เข้าสู่ระบบ</a>
+            &nbsp;
               
             <?php }else{?>
          <a href="logout.php" class="list-group-item">ออกจากระบบ</a>

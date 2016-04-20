@@ -29,7 +29,6 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='insert'){//หาก�
 					in_stock,
 					item_detail,
 					price,
-					item_type,
 					item_status
 					) VALUES(
                     :name,
@@ -39,7 +38,6 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='insert'){//หาก�
 					:in_stock,
 					:item_detail,
 					:price,
-					:item_type,
 					:item_status
 					
                 )";//คำสั่งในการเพิ่มข้อมูลลงในตาราง item
@@ -52,7 +50,6 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='insert'){//หาก�
 					'in_stock'=>$i['in_stock'],
 					'item_detail'=>$i['item_detail'],
 					'price'=>$i['price'],
-					'item_type'=>$i['item_type'],
 					'item_status'=>$i['item_status']
 					
                 )); //ทำการ Bind ค่าลงใน Field ต่างๆ และประมวลผล
@@ -82,7 +79,6 @@ if(isset($_GET['action']) && $_GET['action']=='edit'){ //ถ้ามีกา�
 	$in_stock = $rse['in_stock'];
 	$item_detail = $rse['item_detail'];
 	$price = $rse['price'];
-	$item_type = $rse['item_type'];
 	$item_status = $rse['item_status'];
 	 // กำหนดค่าให้กับตัวแปรเพื่อส่งให้ฟอร์ม
 }
@@ -97,7 +93,6 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='edit'){// ตรว�
 			in_stock=:in_stock,
 			item_detail=:item_detail,
 			price=:price,
-			item_type=:item_type,
 			item_status=:item_status
 			
             WHERE id=:id";//คำสั่งในการแก้ไขข้อมูล
@@ -111,7 +106,6 @@ if(isset($_POST['i']['action']) && $_POST['i']['action']=='edit'){// ตรว�
 						'in_stock'=>$i['in_stock'],
 						'item_detail'=>$i['item_detail'],
 						'price'=>$i['price'],
-						'item_type'=>$i['item_type'],
 						'item_status'=>$i['item_status']
 						
                     )
@@ -162,34 +156,30 @@ $result->execute();//ประมวลผล
 <!-- ############### รายการข้อมูล ############# -->
 <h3>รายการวัสดุ</h3>
 <div class="table-responsive">
-<table class="table table-bordered table-hover table-striped">
+<table width="592" class="table table-bordered table-hover table-striped">
     <thead>
         <tr>
-    		<th>ชื่อ</th>
-			<th>หน่วย</th>
-			<th>หมายเลข Serial</th>
-			<th>รหัสวัสดุ</th>
-			<th>จำนวนคงเหลือ</th>
-			<th>รายละเอียด</th>
-			<th>ราคา</th>
-			<th>ประเภท</th>
-			<th>สถานะ</th>
-	
+    		<th width="26"><center>ชื่อ</center></th>
+			<th width="111"><center>หมายเลข Serial</center></th>
+			<th width="79"><center>รหัสวัสดุ</center></th>
+			<th width="106"><center>จำนวนคงเหลือ</center></th>
+			<th width="130"><center>รายละเอียด</center></th>
+			<th width="45"><center>ราคา</center></th>
+			<th width="63"><center>สถานะ</center></th>
+
          
         </tr>
     </thead>
     <tbody>
     <?php while($rs=$result->fetch()){?>
         <tr>
-    		<td><?php echo $rs['name'];?></td>
-			<td><?php echo $rs['unit_id'];?></td>
-			<td><?php echo $rs['serial_no'];?></td>
-			<td><?php echo $rs['item_code'];?></td>
-			<td><?php echo $rs['in_stock'];?></td>
-			<td><?php echo $rs['item_detail'];?></td>
-			<td><?php echo $rs['price'];?></td>
-			<td><?php echo $rs['item_type'];?></td>
-			<td><?php echo $rs['item_status'];?></td>
+    		<td align="center"><?php echo $rs['name'];?></td>
+			<td align="center"><?php echo $rs['serial_no'];?></td>
+			<td align="center"><?php echo $rs['item_code'];?></td>
+			<td align="center"><?php echo $rs['in_stock'];?></td>
+			<td align="center"><?php echo $rs['item_detail'];?></td>
+			<td align="center"><?php echo $rs['price'];?></td>
+			<td align="center"><?php echo $rs['item_status'];?></td>
 	
                     
         </tr>
@@ -199,6 +189,3 @@ $result->execute();//ประมวลผล
 </div>
 </div>
 </div><!--row-->
-<?php
-include 'html_foot.php';
-?>

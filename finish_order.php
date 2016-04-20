@@ -13,10 +13,10 @@ include 'html_head.php';
 
 //print_r($_SESSION['user']);
 ?>
+ ทำรายการเรียบร้อยแล้ว
+<br><br>
 
-Finish Your Order. <br><br>
-
-<a href="view_order.php?OrderID=<?=$_GET["OrderID"];?>">View Order</a>
+<a href="view_order.php?OrderID=<?=$_GET["OrderID"];?>">ปริ้นรายการวัสดุ</a>
 
 </body>
 </html>

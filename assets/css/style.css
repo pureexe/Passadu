@@ -4,8 +4,8 @@ html {
   min-height: 100%;
 }
 body{
-	padding-top: 67px;
-	margin-bottom: 60px;
+	padding-top: 8%;
+	margin-bottom: AUTO;
 }
 .footer {
   position: absolute;
