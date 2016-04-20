@@ -14,6 +14,7 @@ include 'html_head.php';
 <?php
 mysql_connect("localhost","pure_passadu","12345678");
 mysql_select_db("pure_passadu");
+mysql_set_charset('utf8');
 
 ?>
 <table width="536"  border="1">
